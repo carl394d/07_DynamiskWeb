@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <template>
+        <article>
+
+        </article>
+    </template>
+    <script>
+        const endpoint = "https://spreadsheets.google.com/feeds/list/1XWwbfWs<D7f4jHqp51V_oT3pkHuR-CcEUw4YtryK7F0/od6/public/values?alt=json";
+
+        let personer = [];
+
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            loadData();
+        }
+        async function loadData() {
+            const response = await fetch(endpoint);
+            personer = await response.json();
+            console.log(personer);
+
+            visPersoner();
+        }
+
+        function visPersoner() {
+            const container = document.querySelector(".data-container");
+            const template = document.querySelector("template");
+            personer.feed.entry.forEach(person => {
+                let klon = template.cloneNode(true).content;
+                klon.querySelector("h2").textContent = person.gsx$navn.$t;
+                klon.querySelector("h2").textContent += " " + person.gsx$navn.$t;
+                klon.querySelector("img").src = person.gsx$billede.$t;
+                klon.querySelector("img").alt = person.gsx$navn.$t;
+                klon.querySelector(".alder").textContent += person.gsx$religion.$t;
+                container.appendChild(klon);
+
+            });
+        }
+
+    </script>
+</body>
+
+</html>
