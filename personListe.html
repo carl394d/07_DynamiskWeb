@@ -13,37 +13,66 @@
         </article>
     </template>
     <script>
-        const endpoint = "https://spreadsheets.google.com/feeds/list/1XWwbfWs<D7f4jHqp51V_oT3pkHuR-CcEUw4YtryK7F0/od6/public/values?alt=json";
-
-        let personer = [];
-
         document.addEventListener("DOMContentLoaded", start);
+        const endpoint = "https://spreadsheets.google.com/feeds/list/1XWWbfWszD7f4jHqp51V_oT3pkHuR-ceEUw4YtryK7F0/od6/public/values?alt=json";
+        let personer = [];
 
         function start() {
             loadData();
         }
+
         async function loadData() {
             const response = await fetch(endpoint);
+            console.log(response);
             personer = await response.json();
             console.log(personer);
-
             visPersoner();
+
         }
 
-        function visPersoner() {
-            const container = document.querySelector(".data-container");
-            const template = document.querySelector("template");
-            personer.feed.entry.forEach(person => {
-                let klon = template.cloneNode(true).content;
-                klon.querySelector("h2").textContent = person.gsx$navn.$t;
-                klon.querySelector("h2").textContent += " " + person.gsx$navn.$t;
-                klon.querySelector("img").src = person.gsx$billede.$t;
-                klon.querySelector("img").alt = person.gsx$navn.$t;
-                klon.querySelector(".alder").textContent += person.gsx$religion.$t;
-                container.appendChild(klon);
+        function visPersoner();
+        const container = document.querySelector("#data-container");
+        const personerTemplate = document.querySelector("template");
+        personer.feed.entry.forEach(personerne => {
+            let klon = personerTemplate.cloneNode(true).content;
+            klon.querySelector("h2").textContent = person.gsx$navn.$t;
+            klon.querySelector("h2").textContent += " " + personerne.gsx$navn.$t;
+            klon.querySelector("img").src = personerne.gsx$billede.$t;
+            klon.querySelector("img").alt = personerne.gsx$navn.$t;
+            klon.querySelector(".alder").textContent += personerne.gsx$religion.$t;
+            container.appendChild(klon);
+        })
+        /*  const endpoint = "https://spreadsheets.google.com/feeds/list/1XWwbfWs<D7f4jHqp51V_oT3pkHuR-CcEUw4YtryK7F0/od6/public/values?alt=json";
 
-            });
-        }
+          let personer = [];
+
+          document.addEventListener("DOMContentLoaded", start);
+
+          function start() {
+              loadData();
+          }
+          async function loadData() {
+              const response = await fetch(endpoint);
+              personer = await response.json();
+              console.log(personer);
+
+              visPersoner();
+          }
+
+          function visPersoner() {
+              const container = document.querySelector(".data-container");
+              const template = document.querySelector("template");
+              personer.feed.entry.forEach(person => {
+                  let klon = template.cloneNode(true).content;
+                  klon.querySelector("h2").textContent = person.gsx$navn.$t;
+                  klon.querySelector("h2").textContent += " " + person.gsx$navn.$t;
+                  klon.querySelector("img").src = person.gsx$billede.$t;
+                  klon.querySelector("img").alt = person.gsx$navn.$t;
+                  klon.querySelector(".alder").textContent += person.gsx$religion.$t;
+                  container.appendChild(klon);
+
+              });
+          } */
 
     </script>
 </body>
