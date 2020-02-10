@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+       <!DOCTYPE html>
 <html lang="">
 
 <head>
@@ -62,6 +63,22 @@
             margin-bottom: 20px;
         }
 
+        .sorter {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-image: linear-gradient(90deg, #00C0FF 0%, #FFCF00 49%, #FC4F4F 80%, #00C0FF 100%);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+            margin-bottom: 20px;
+        }
+
         .valgt {
             background-image: url(gotwood.jpg);
             ;
@@ -87,7 +104,10 @@
         <button class="filter" data-køn="k">Kvinder</button>
         <button class="filter" data-køn="alle">Andet</button>
     </nav>
-
+    <nav>
+        <button class="sorter valgt" data-alder="40" data-under="false">Under 40</button>
+        <button class="sorter" data-alder="40" data-under="true">Over 40</button>
+    </nav>
     <section class="container"></section>
     <template>
         <article>
@@ -100,11 +120,13 @@
     </template>
 
     <script>
-        const container = document.querySelector(".container");
         const endpoint = ("https://spreadsheets.google.com/feeds/list/1XWWbfWszD7f4jHqp51V_oT3pkHuR-ceEUw4YtrvK7F0/od6/public/values?alt=json");
         document.addEventListener("DOMContentLoaded", preStart);
         let personer = [];
         let filter = "alle";
+        let sorter = 55;
+        let sorterUnder = true;
+        const container = document.querySelector(".container");
 
         function preStart() {
             hentData();
@@ -114,20 +136,21 @@
             const response = await fetch(endpoint);
             personer = await response.json();
             console.log(personer);
+            addEventListenersToButtons();
+            addEventListenersToSortButtons();
             start();
         }
 
         function start() {
-            addEventListenersToButtons();
-            container.innerHTML = "";
 
+            container.innerHTML = "";
             const personTemplate = document.querySelector("template");
             personer.feed.entry.forEach((person) => {
-                if (filter == "alle" || filter == person.gsx$sex.$t) {
+                if ((filter == "alle" || filter == person.gsx$sex.$t) && ((sorterUnder == true && person.gsx$alder.$t < sorter) || (sorterUnder == false && person.gsx$alder.$t > sorter))) {
                     let klon = personTemplate.cloneNode(true).content;
                     klon.querySelector("h2").textContent = person.gsx$navn.$t;
                     klon.querySelector("img").src = person.gsx$billede.$t;
-                    klon.querySelector(".p1").textContent += person.gsx$religion.$t;
+                    klon.querySelector(".p1").textContent += person.gsx$alder.$t;
                     klon.querySelector(".p2").textContent += person.gsx$hobby.$t;
                     klon.querySelector(".p3").textContent += person.gsx$alder.$t;
                     container.appendChild(klon);
@@ -141,6 +164,12 @@
             })
         }
 
+        function addEventListenersToSortButtons() {
+            document.querySelectorAll(".sorter").forEach(elm => {
+                elm.addEventListener("click", sortFiltrering);
+            })
+        }
+
         function filtrering() {
             console.log("FILTER");
             filter = this.dataset.køn;
@@ -149,7 +178,22 @@
                 elm.classList.remove("valgt");
             })
             this.classList.add("valgt");
-            start()
+            start();
+        }
+
+        function sortFiltrering() {
+            document.querySelectorAll(".sorter").forEach(elm => {
+                elm.classList.remove("valgt");
+            })
+            this.classList.add("valgt");
+            console.log(typeof(this.dataset.alder));
+            sorter = parseInt(this.dataset.alder);
+            if (this.dataset.under == "false") {
+                sorterUnder = true;
+            } else {
+                sorterUnder = false;
+            }
+            start();
         }
     </script>
 </body></html>
