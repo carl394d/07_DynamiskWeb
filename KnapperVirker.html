@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        {
+            box-sizing: border-box;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        section {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 10px;
+            background: #ececec;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            grid-gap: 1em;
+        }
+
+        article {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        h1 {
+            display: flex;
+            justify-content: center;
+            font-family: monospace;
+            font-size: 4rem;
+        }
+
+
+        button {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-image: linear-gradient(90deg, #00C0FF 0%, #FFCF00 49%, #FC4F4F 80%, #00C0FF 100%);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            opacity: 75%;
+        }
+
+        button:active {
+
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Alle</h1>
+    <nav>
+        <button class="filter valgt" data-køn="alle">Alle</button>
+        <button class="filter" data-køn="m">Mænd</button>
+        <button class="filter" data-køn="k">Kvinder</button>
+        <button class="filter" data-køn="alle">Andet</button>
+    </nav>
+    <section class="container"></section>
+    <template>
+        <article>
+            <h2></h2>
+            <img src="" alt="">
+            <p class="p1">Religion: </p>
+            <p class="p2">Hobby: </p>
+        </article>
+    </template>
+
+    <script>
+        const container = document.querySelector(".container");
+        const endpoint = ("https://spreadsheets.google.com/feeds/list/1XWWbfWszD7f4jHqp51V_oT3pkHuR-ceEUw4YtrvK7F0/od6/public/values?alt=json");
+        document.addEventListener("DOMContentLoaded", preStart);
+        let personer = [];
+        let filter = "alle";
+
+        function preStart() {
+            hentData();
+        }
+
+        async function hentData() {
+            const response = await fetch(endpoint);
+            personer = await response.json();
+            console.log(personer);
+            start();
+        }
+
+        function start() {
+            addEventListenersToButtons();
+            container.innerHTML = "";
+
+            const personTemplate = document.querySelector("template");
+            personer.feed.entry.forEach((person) => {
+                if (filter == "alle" || filter == person.gsx$sex.$t) {
+                    let klon = personTemplate.cloneNode(true).content;
+                    klon.querySelector("h2").textContent = person.gsx$navn.$t;
+                    klon.querySelector("img").src = person.gsx$billede.$t;
+                    klon.querySelector(".p1").textContent += person.gsx$religion.$t;
+                    klon.querySelector(".p2").textContent += person.gsx$hobby.$t;
+                    container.appendChild(klon);
+                }
+            })
+        }
+
+        function addEventListenersToButtons() {
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.addEventListener("click", filtrering);
+            })
+        }
+
+        function filtrering() {
+            console.log("FILTER");
+            filter = this.dataset.køn;
+            document.querySelector("h1").textContent = this.textContent;
+            start()
+        }
+
+    </script>
+</body>
+
+</html>
