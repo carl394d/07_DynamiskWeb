@@ -14,58 +14,6 @@
             max-width: 100%;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 10px;
-            background: #ececec;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            grid-gap: 1em;
-        }
-
-        article {
-            border: 1px solid black;
-            padding: 10px;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-around;
-        }
-
-        h1 {
-            display: flex;
-            justify-content: center;
-            font-family: monospace;
-            font-size: 4rem;
-        }
-
-        p {
-            font-family: sans-serif;
-            font-weight: 700;
-        }
-
-        .filter {
-            display: inline-block;
-            padding: 15px 25px;
-            font-size: 24px;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            outline: none;
-            color: #fff;
-            background-image: linear-gradient(90deg, #00C0FF 0%, #FFCF00 49%, #FC4F4F 80%, #00C0FF 100%);
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 9px #999;
-            margin-bottom: 20px;
-        }
-
-        .valgt {
-            background-image: url(gotwood.jpg);
-            ;
-        }
 
         button:hover {
             opacity: 75%;
@@ -102,6 +50,7 @@
         .skjul {
             display: none;
         }
+
     </style>
 </head>
 
@@ -117,27 +66,6 @@
             <p class="p3">Alder: </p>
         </article>
     </section>
-
-    <h1>Alle</h1>
-    <nav>
-        <button class="filter valgt" data-køn="alle">Alle</button>
-        <button class="filter" data-køn="m">Mænd</button>
-        <button class="filter" data-køn="k">Kvinder</button>
-        <button class="filter" data-køn="alle">Andet</button>
-    </nav>
-
-    <section class="container"></section>
-    <template>
-        <article class="person">
-            <h2></h2>
-            <img src="" alt="">
-            <p class="p1">Religion: </p>
-            <p class="p2">Hobby: </p>
-            <p class="p3">Alder: </p>
-        </article>
-    </template>
-
-
 
 
     <script>
@@ -182,11 +110,6 @@
 
         function visDetalje(person) {
             detalje.classList.remove("skjul");
-            detalje.querySelector("h2").textContent = person.gsx$navn.$t;
-            detalje.querySelector("img").src = person.gsx$billede.$t;
-            detalje.querySelector(".p1").textContent += person.gsx$religion.$t;
-            detalje.querySelector(".p2").textContent += person.gsx$hobby.$t;
-            detalje.querySelector(".p3").textContent += person.gsx$alder.$t;
             detalje.querySelector("button").addEventListener("click", () => {
                 detalje.classList.add("skjul");
             });
@@ -195,22 +118,7 @@
 
         }
 
-
-        function addEventListenersToButtons() {
-            document.querySelectorAll(".filter").forEach(elm => {
-                elm.addEventListener("click", filtrering);
-            })
-        }
-
-        function filtrering() {
-            console.log("FILTER");
-            filter = this.dataset.køn;
-            document.querySelector("h1").textContent = this.textContent;
-            document.querySelectorAll(".filter").forEach(elm => {
-                elm.classList.remove("valgt");
-            })
-            this.classList.add("valgt");
-            start()
-        }
     </script>
-</body></html>
+</body>
+
+</html>
