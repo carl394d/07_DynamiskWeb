@@ -14,7 +14,7 @@
             max-width: 100%;
         }
 
-        section {
+        .container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 10px;
@@ -76,10 +76,47 @@
             box-shadow: 0 5px #666;
             transform: translateY(4px);
         }
+
+        #detalje {
+            position: fixed;
+            width: 100vw;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .5);
+            z-index: 10;
+            left: 0;
+            top: 0;
+        }
+
+        #person-detalje {
+            margin: 3em;
+            padding: 2em;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        #detalje button {
+            margin: .5em;
+            font-size: 2rem;
+        }
+
+        .skjul {
+            display: none;
+        }
+
     </style>
 </head>
 
 <body>
+
+    <section id="detalje" class="skjul">
+        <button>X</button>
+        <article id="person-detalje">
+            <h1>NAVN</h1>
+            <img src="" alt="">
+            <p>religion: </p>
+        </article>
+    </section>
+
     <h1>Alle</h1>
     <nav>
         <button class="filter valgt" data-køn="alle">Alle</button>
@@ -90,7 +127,7 @@
 
     <section class="container"></section>
     <template>
-        <article>
+        <article class="person">
             <h2></h2>
             <img src="" alt="">
             <p class="p1">Religion: </p>
@@ -99,12 +136,16 @@
         </article>
     </template>
 
+
+
+
     <script>
         const container = document.querySelector(".container");
         const endpoint = ("https://spreadsheets.google.com/feeds/list/1XWWbfWszD7f4jHqp51V_oT3pkHuR-ceEUw4YtrvK7F0/od6/public/values?alt=json");
         document.addEventListener("DOMContentLoaded", preStart);
         let personer = [];
         let filter = "alle";
+        const detail = document.querySelector("#detail");
 
         function preStart() {
             hentData();
@@ -130,10 +171,24 @@
                     klon.querySelector(".p1").textContent += person.gsx$religion.$t;
                     klon.querySelector(".p2").textContent += person.gsx$hobby.$t;
                     klon.querySelector(".p3").textContent += person.gsx$alder.$t;
+                    klon.querySelector(".person").addEventListener("click", () => {
+                        visDetalje(person);
+                    });
                     container.appendChild(klon);
                 }
             })
         }
+
+        function visDetalje(person) {
+            detalje.classList.remove("skjul");
+            detalje.querySelector("button").addEventListener("click", () => {
+                detalje.classList.add("skjul");
+            });
+
+            console.log(person.gsx$navn.$t);
+
+        }
+
 
         function addEventListenersToButtons() {
             document.querySelectorAll(".filter").forEach(elm => {
@@ -151,5 +206,8 @@
             this.classList.add("valgt");
             start()
         }
+
     </script>
-</body></html>
+</body>
+
+</html>

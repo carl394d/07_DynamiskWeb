@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        {
+            box-sizing: border-box;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        section {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 10px;
+            background: #ececec;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            grid-gap: 1em;
+        }
+
+        article {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        h1 {
+            display: flex;
+            justify-content: center;
+            font-family: monospace;
+            font-size: 4rem;
+        }
+
+        p {
+            font-family: sans-serif;
+            font-weight: 700;
+        }
+
+        .filter {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-image: linear-gradient(90deg, #00C0FF 0%, #FFCF00 49%, #FC4F4F 80%, #00C0FF 100%);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+            margin-bottom: 20px;
+        }
+
+        .sorter {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-image: linear-gradient(90deg, #00C0FF 0%, #FFCF00 49%, #FC4F4F 80%, #00C0FF 100%);
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+            margin-bottom: 20px;
+        }
+
+        .valgt {
+            background-image: url(gotwood.jpg);
+            ;
+        }
+
+        button:hover {
+            opacity: 75%;
+        }
+
+        button:active {
+
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <button class="filter valgt" data-kategori="alle">Alle</button>
+        <button class="filter" data-kategori="forretter">Forretter</button>
+        <button class="filter" data-kategori="hovedretter">Hovedretter</button>
+        <button class="filter" data-kategori="desserter">Desserter</button>
+        <button class="filter" data-kategori="drikkevarer">Drikkevarer</button>
+        <button class="filter" data-kategori="sideorders">Sideorders</button>
+    </nav>
+    <h1>Alle</h1>
+
+    <section class="container"></section>
+    <template>
+        <article>
+            <h2>Navn</h2>
+            <img src="" alt="">
+            <p class="p1">Beskrivelse: </p>
+            <p class="p2">Pris: </p>
+            <p class="p3">Oprindelse: </p>
+            <p class="p4"> </p>
+        </article>
+    </template>
+
+    <script>
+        const endpoint = ("https://spreadsheets.google.com/feeds/list/16sJCtjl59YDATtSenpwkwACDo9dIEOaGb_mX-HLbHU0/od6/public/values?alt=json");
+        document.addEventListener("DOMContentLoaded", preStart);
+        let retter = [];
+        let filter = "alle";
+        let sorter = 55;
+        let sorterUnder = true;
+        const container = document.querySelector(".container");
+
+        function preStart() {
+            hentData();
+        }
+
+        async function hentData() {
+            const response = await fetch(endpoint);
+            retter = await response.json();
+            console.log(retter);
+            addEventListenersToButtons();
+            addEventListenersToSortButtons();
+            start();
+        }
+
+        function start() {
+
+            container.innerHTML = "";
+            const personTemplate = document.querySelector("template");
+            retter.feed.entry.forEach(ret => {
+                if (filter == "alle" || filter == ret.gsx$kategori.$t) {
+                    let klon = personTemplate.cloneNode(true).content;
+                    klon.querySelector("h2").textContent = ret.gsx$navn.$t;
+                    klon.querySelector("img").src = `imgs/small/${ret.gsx$billede.$t}-sm.jpg`;
+                    klon.querySelector(".p1").textContent += ret.gsx$kort.$t;
+                    klon.querySelector(".p2").textContent += ret.gsx$pris.$t;
+                    klon.querySelector(".p3").textContent += ret.gsx$oprindelse.$t;
+                    container.appendChild(klon);
+                }
+            })
+
+        }
+
+        function addEventListenersToButtons() {
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.addEventListener("click", filtrering);
+            })
+        }
+
+        function addEventListenersToSortButtons() {
+            document.querySelectorAll(".sorter").forEach(elm => {
+                elm.addEventListener("click", sortFiltrering);
+            })
+        }
+
+        function filtrering() {
+            console.log("FILTER");
+            filter = this.dataset.kategori;
+            document.querySelector("h1").textContent = this.textContent;
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.classList.remove("valgt");
+            })
+            this.classList.add("valgt");
+            start();
+        }
+
+        function sortFiltrering() {
+            document.querySelectorAll(".sorter").forEach(elm => {
+                elm.classList.remove("valgt");
+            })
+            this.classList.add("valgt");
+            console.log(typeof(this.dataset.alder));
+            sorter = parseInt(this.dataset.alder);
+            if (this.dataset.under == "false") {
+                sorterUnder = true;
+            } else {
+                sorterUnder = false;
+            }
+            start();
+        }
+    </script>
+</body></html>
