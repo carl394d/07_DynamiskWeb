@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="da">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Bistro Babushka</title>
     <style>
         {
             box-sizing: border-box;
@@ -14,11 +14,56 @@
             max-width: 100%;
         }
 
+        .filter {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: darkslategray;
+            border: none;
+            box-shadow: 0 9px #999;
+            margin-bottom: 20px;
+        }
+
+        .hero-image {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("ruski_towers.jpg");
+
+            height: 400px;
+
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+
+        .hero-text {
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+        }
+
+        .hero-text h2 {
+            letter-spacing: 28px;
+        }
+
+        .hero-text h3 {
+            font-family: serif;
+            font-size: 5rem;
+        }
+
         .container {
             max-width: 1000px;
             margin: 0 auto;
             padding: 10px;
-            background: #ececec;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             grid-gap: 1em;
@@ -27,6 +72,8 @@
         article {
             border: 1px solid black;
             padding: 10px;
+            margin: 20px;
+
         }
 
         nav {
@@ -43,13 +90,13 @@
 
         p {
             font-family: sans-serif;
-            font-weight: 700;
+            font-weight: 100;
         }
 
 
 
         .valgt {
-            background-color: red;
+            background-color: palegoldenrod;
             ;
         }
 
@@ -73,11 +120,30 @@
             top: 0;
         }
 
+        #ret-detalje p {
+            font-weight: 100;
+
+        }
+
         #ret-detalje {
             margin: 3em;
             padding: 2em;
             background-color: #fff;
             cursor: pointer;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #ret-detalje img {
+            width: 40%
+        }
+
+        #ret-detalje h2 {
+            font-size: 3rem;
+        }
+
+        h2 {
+            font-family: monospace;
         }
 
         #detalje button {
@@ -92,7 +158,12 @@
 </head>
 
 <body>
-
+    <div class="hero-image">
+        <div class="hero-text">
+            <h3>Bistro Babushka</h3>
+            <h2>приятного ♦ аппетита</h2>
+        </div>
+    </div>
     <section id="detalje" class="skjul">
         <button>X</button>
         <article id="ret-detalje">
