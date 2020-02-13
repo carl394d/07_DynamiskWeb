@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+
+    <section id="detalje" class="skjul">
+        <button id="luk">X</button>
+        <article id="ret-detalje">
+            <h2></h2>
+            <img src="" alt="">
+            <p class="p1">Beskrivelse: </p>
+            <p class="p2">Pris: </p>
+            <p class="p3">Oprindelse: </p>
+        </article>
+    </section>
+
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const retId = urlParams.get("id");
+        console.log(retId);
+        let retter = [];
+
+        const endpoint = ("https://spreadsheets.google.com/feeds/list/16sJCtjl59YDATtSenpwkwACDo9dIEOaGb_mX-HLbHU0/od6/public/values?alt=json");
+        document.addEventListener("DOMContentLoaded", preStart);
+        const container = document.querySelector(".container");
+        const detail = document.querySelector("#detail");
+
+        function preStart() {
+            hentData();
+        }
+
+        async function hentData() {
+            const response = await fetch(endpoint);
+            retter = await response.json();
+            visRet();
+        }
+
+        function visRet() {
+            detalje.querySelector("button").addEventListener("click", () => {
+                history.back();
+            });
+            retter.feed.entry.forEach(ret => {
+                if (retId == ret.gsx$id.$t) {
+
+                    detalje.querySelector("h2").textContent = ret.gsx$navn.$t;
+                    detalje.querySelector("img").src = `imgs/small/${ret.gsx$billede.$t}-sm.jpg`;
+                    detalje.querySelector(".p1").textContent += ret.gsx$kort.$t;
+                    detalje.querySelector(".p2").textContent += ret.gsx$pris.$t;
+                    detalje.querySelector(".p3").textContent += ret.gsx$oprindelse.$t;
+
+                }
+            })
+
+
+        }
+
+    </script>
+</body>
+
+</html>
