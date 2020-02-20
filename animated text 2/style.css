@@ -1,0 +1,74 @@
+overflow:visible;
+
+#O,
+#P,
+I#,
+A# {
+    stroke: red;
+    stroke-width: 1px;
+    fill: transparent;
+}
+
+#O {
+    stroke-dasharray: 300px;
+    stroke-dashoffset: -300px;
+    Animation: O-anim .75s linear 0s forwards;
+}
+
+#P {
+    stroke-dasharray: 300px;
+    stroke-dashoffset: -300px;
+    Animation: P-anim .75s linear .80s forwards;
+}
+
+#I {
+    stroke-dasharray: 300px;
+    stroke-dashoffset: -300px;
+    Animation: I-anim .75s linear 1.60s forwards;
+}
+
+#A {
+    stroke-dasharray: 300px;
+    stroke-dashoffset: -300px;
+    Animation: A-anim .75s linear 2.4s forwards;
+}
+
+@ keyframes O-anim {
+    from {
+        stroke-dashoffset: -383px
+    }
+
+    to {
+        stroke-dashoffset: 0px;
+    }
+}
+
+@ keyframes P-anim {
+    from {
+        stroke-dashoffset: -383px
+    }
+
+    to {
+        stroke-dashoffset: 0px;
+    }
+}
+
+@ keyframes I-anim {
+    from {
+        stroke-dashoffset: -383px
+    }
+
+    to {
+        stroke-dashoffset: 0px;
+    }
+}
+
+@ keyframes A-anim {
+    from {
+        stroke-dashoffset: -383px
+    }
+
+    to {
+        stroke-dashoffset: 0px;
+    }
+}
